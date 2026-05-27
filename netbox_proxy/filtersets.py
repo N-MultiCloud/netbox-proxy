@@ -176,13 +176,13 @@ class ProxyDeploymentFilterSet(NetBoxModelFilterSet):
     status = django_filters.MultipleChoiceFilter(
         choices=[
             ("pending", "Pending"),
-            ("running", "Running"),
+            ("rendering", "Rendering"),
+            ("testing", "Testing"),
+            ("deploying", "Deploying"),
+            ("reloading", "Reloading"),
             ("success", "Success"),
             ("failed", "Failed"),
-            ("rolledback", "Rolled Back"),
-            ("skipped", "Skipped"),
-            ("cancelled", "Cancelled"),
-            ("partial", "Partial"),
+            ("rolled_back", "Rolled Back"),
         ]
     )
 
