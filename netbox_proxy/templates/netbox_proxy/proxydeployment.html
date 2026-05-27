@@ -1,0 +1,87 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">Proxy Deployment</h5>
+      <div class="card-body">
+        <table class="table table-hover attr-table">
+          <tr>
+            <th scope="row">Cluster</th>
+            <td><a href="{{ object.cluster.get_absolute_url }}">{{ object.cluster }}</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Node</th>
+            <td>
+              {% if object.node %}
+                <a href="{{ object.node.get_absolute_url }}">{{ object.node }}</a>
+              {% else %}
+                {{ ''|placeholder }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Status</th>
+            <td>{{ object.get_status_display }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Initiated By</th>
+            <td>{{ object.initiated_by|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">RPC Execution</th>
+            <td>
+              {% if object.rpc_execution %}
+                <a href="{{ object.rpc_execution.get_absolute_url }}">{{ object.rpc_execution }}</a>
+              {% else %}
+                {{ ''|placeholder }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Started At</th>
+            <td>{{ object.started_at|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Completed At</th>
+            <td>{{ object.completed_at|placeholder }}</td>
+          </tr>
+          {% if object.error_message %}
+          <tr>
+            <th scope="row">Error</th>
+            <td class="text-danger"><pre>{{ object.error_message }}</pre></td>
+          </tr>
+          {% endif %}
+          <tr>
+            <th scope="row">Description</th>
+            <td>{{ object.description|placeholder }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {% include 'inc/custom_fields_panel.html' %}
+    {% include 'inc/tags_panel.html' %}
+  </div>
+  <div class="col col-md-6">
+    {% if object.config_snapshot %}
+    <div class="card">
+      <h5 class="card-header">Config Snapshot</h5>
+      <div class="card-body">
+        <pre>{{ object.config_snapshot }}</pre>
+      </div>
+    </div>
+    {% endif %}
+    {% if object.previous_config %}
+    <div class="card">
+      <h5 class="card-header">Previous Config</h5>
+      <div class="card-body">
+        <pre>{{ object.previous_config }}</pre>
+      </div>
+    </div>
+    {% endif %}
+    {% include 'inc/comments_panel.html' %}
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,67 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">Proxy Upstream</h5>
+      <div class="card-body">
+        <table class="table table-hover attr-table">
+          <tr>
+            <th scope="row">Cluster</th>
+            <td><a href="{{ object.cluster.get_absolute_url }}">{{ object.cluster }}</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Name</th>
+            <td>{{ object.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Protocol</th>
+            <td>{{ object.get_protocol_display }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Balance</th>
+            <td>{{ object.get_balance_display }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Keepalive</th>
+            <td>{{ object.keepalive }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Health Check</th>
+            <td>{% if object.health_check_enabled %}<span class="text-success">Enabled</span>{% else %}<span class="text-muted">Disabled</span>{% endif %}</td>
+          </tr>
+          {% if object.health_check_enabled %}
+          <tr>
+            <th scope="row">Health Check Path</th>
+            <td>{{ object.health_check_path|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Health Check Interval (s)</th>
+            <td>{{ object.health_check_interval }}</td>
+          </tr>
+          {% endif %}
+          <tr>
+            <th scope="row">Description</th>
+            <td>{{ object.description|placeholder }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {% include 'inc/custom_fields_panel.html' %}
+    {% include 'inc/tags_panel.html' %}
+  </div>
+  <div class="col col-md-6">
+    {% if object.custom_directives %}
+    <div class="card">
+      <h5 class="card-header">Custom Directives</h5>
+      <div class="card-body">
+        <pre>{{ object.custom_directives }}</pre>
+      </div>
+    </div>
+    {% endif %}
+    {% include 'inc/comments_panel.html' %}
+  </div>
+</div>
+{% endblock content %}

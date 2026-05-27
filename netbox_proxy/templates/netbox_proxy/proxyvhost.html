@@ -1,0 +1,83 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">Proxy VHost</h5>
+      <div class="card-body">
+        <table class="table table-hover attr-table">
+          <tr>
+            <th scope="row">Cluster</th>
+            <td><a href="{{ object.cluster.get_absolute_url }}">{{ object.cluster }}</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Name</th>
+            <td>{{ object.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Server Names</th>
+            <td><code>{{ object.server_names }}</code></td>
+          </tr>
+          <tr>
+            <th scope="row">Listen Port</th>
+            <td>{{ object.listen_port }}</td>
+          </tr>
+          <tr>
+            <th scope="row">SSL Listen Port</th>
+            <td>{{ object.listen_ssl_port }}</td>
+          </tr>
+          <tr>
+            <th scope="row">SSL Mode</th>
+            <td>{{ object.get_ssl_mode_display }}</td>
+          </tr>
+          <tr>
+            <th scope="row">SSL Certificate</th>
+            <td>
+              {% if object.ssl_certificate %}
+                <a href="{{ object.ssl_certificate.get_absolute_url }}">{{ object.ssl_certificate }}</a>
+              {% else %}
+                {{ ''|placeholder }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Enabled</th>
+            <td>{% if object.is_enabled %}<span class="text-success">Yes</span>{% else %}<span class="text-muted">No</span>{% endif %}</td>
+          </tr>
+          <tr>
+            <th scope="row">Default Server</th>
+            <td>{% if object.is_default_server %}<span class="text-success">Yes</span>{% else %}<span class="text-muted">No</span>{% endif %}</td>
+          </tr>
+          <tr>
+            <th scope="row">Access Log</th>
+            <td>{{ object.access_log|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Error Log</th>
+            <td>{{ object.error_log|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Description</th>
+            <td>{{ object.description|placeholder }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {% include 'inc/custom_fields_panel.html' %}
+    {% include 'inc/tags_panel.html' %}
+  </div>
+  <div class="col col-md-6">
+    {% if object.custom_directives %}
+    <div class="card">
+      <h5 class="card-header">Custom Directives</h5>
+      <div class="card-body">
+        <pre>{{ object.custom_directives }}</pre>
+      </div>
+    </div>
+    {% endif %}
+    {% include 'inc/comments_panel.html' %}
+  </div>
+</div>
+{% endblock content %}

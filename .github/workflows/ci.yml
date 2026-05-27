@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "feature/**", "fix/**", "release/**"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Run ruff
+        run: ruff check netbox_proxy/
+
+  test:
+    name: Test (NetBox ${{ matrix.netbox-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        netbox-version: ["v4.5", "v4.6"]
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: netbox
+          POSTGRES_USER: netbox
+          POSTGRES_PASSWORD: netbox
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    container:
+      image: netboxcommunity/netbox:${{ matrix.netbox-version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install plugin and dependencies
+        run: |
+          pip install -e ".[dev]" || pip install -e .
+
+      - name: Run Django checks
+        run: |
+          cd /opt/netbox/netbox
+          python manage.py check --deploy 2>&1 || python manage.py check
+        env:
+          NETBOX_CONFIGURATION: netbox.configuration_testing
+
+      - name: Run migrations check
+        run: |
+          cd /opt/netbox/netbox
+          python manage.py makemigrations netbox_proxy --check --dry-run
+        env:
+          NETBOX_CONFIGURATION: netbox.configuration_testing
+
+      - name: Run tests
+        run: |
+          cd /opt/netbox/netbox
+          python manage.py test netbox_proxy --verbosity=2
+        env:
+          NETBOX_CONFIGURATION: netbox.configuration_testing

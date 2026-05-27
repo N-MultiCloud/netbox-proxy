@@ -1,0 +1,65 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">Proxy SSL Certificate</h5>
+      <div class="card-body">
+        <table class="table table-hover attr-table">
+          <tr>
+            <th scope="row">Name</th>
+            <td>{{ object.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Provider</th>
+            <td>{{ object.get_provider_display }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Domain</th>
+            <td>{{ object.domain }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Certificate Path</th>
+            <td>{{ object.cert_path|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Key Path</th>
+            <td>{{ object.key_path|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Chain Path</th>
+            <td>{{ object.chain_path|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Auto Renew</th>
+            <td>{% if object.auto_renew %}<span class="text-success">Yes</span>{% else %}<span class="text-muted">No</span>{% endif %}</td>
+          </tr>
+          <tr>
+            <th scope="row">Expires</th>
+            <td>{{ object.expires_at|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Description</th>
+            <td>{{ object.description|placeholder }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {% include 'inc/custom_fields_panel.html' %}
+    {% include 'inc/tags_panel.html' %}
+  </div>
+  <div class="col col-md-6">
+    {% if object.custom_directives %}
+    <div class="card">
+      <h5 class="card-header">Custom Directives</h5>
+      <div class="card-body">
+        <pre>{{ object.custom_directives }}</pre>
+      </div>
+    </div>
+    {% endif %}
+    {% include 'inc/comments_panel.html' %}
+  </div>
+</div>
+{% endblock content %}

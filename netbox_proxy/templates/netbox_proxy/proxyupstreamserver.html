@@ -1,0 +1,57 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">Proxy Upstream Server</h5>
+      <div class="card-body">
+        <table class="table table-hover attr-table">
+          <tr>
+            <th scope="row">Upstream</th>
+            <td><a href="{{ object.upstream.get_absolute_url }}">{{ object.upstream }}</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Address</th>
+            <td>{{ object.address }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Weight</th>
+            <td>{{ object.weight }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Max Fails</th>
+            <td>{{ object.max_fails }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Fail Timeout (s)</th>
+            <td>{{ object.fail_timeout }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Enabled</th>
+            <td>{% if object.enabled %}<span class="text-success">Yes</span>{% else %}<span class="text-danger">No</span>{% endif %}</td>
+          </tr>
+          <tr>
+            <th scope="row">Backup</th>
+            <td>{% if object.is_backup %}<span class="text-warning">Yes</span>{% else %}<span class="text-muted">No</span>{% endif %}</td>
+          </tr>
+          <tr>
+            <th scope="row">Down</th>
+            <td>{% if object.is_down %}<span class="text-danger">Yes</span>{% else %}<span class="text-muted">No</span>{% endif %}</td>
+          </tr>
+          <tr>
+            <th scope="row">Description</th>
+            <td>{{ object.description|placeholder }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {% include 'inc/custom_fields_panel.html' %}
+    {% include 'inc/tags_panel.html' %}
+  </div>
+  <div class="col col-md-6">
+    {% include 'inc/comments_panel.html' %}
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% if proxy_nodes %}
+<div class="card">
+  <h5 class="card-header">Proxy Nodes</h5>
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Cluster</th>
+          <th>Node</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for node in proxy_nodes %}
+        <tr>
+          <td><a href="{{ node.cluster.get_absolute_url }}">{{ node.cluster }}</a></td>
+          <td><a href="{{ node.get_absolute_url }}">{{ node.name }}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}

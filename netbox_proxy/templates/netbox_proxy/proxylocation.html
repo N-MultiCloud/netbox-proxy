@@ -1,0 +1,73 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">Proxy Location</h5>
+      <div class="card-body">
+        <table class="table table-hover attr-table">
+          <tr>
+            <th scope="row">VHost</th>
+            <td><a href="{{ object.vhost.get_absolute_url }}">{{ object.vhost }}</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Path</th>
+            <td><code>{{ object.path }}</code></td>
+          </tr>
+          <tr>
+            <th scope="row">Match Type</th>
+            <td>{{ object.get_match_type_display }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Upstream</th>
+            <td>
+              {% if object.upstream %}
+                <a href="{{ object.upstream.get_absolute_url }}">{{ object.upstream }}</a>
+              {% else %}
+                {{ ''|placeholder }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Proxy Pass URL</th>
+            <td>{{ object.proxy_pass_url|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Rate Limit</th>
+            <td>
+              {% if object.rate_limit %}
+                <a href="{{ object.rate_limit.get_absolute_url }}">{{ object.rate_limit }}</a>
+              {% else %}
+                {{ ''|placeholder }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Sort Order</th>
+            <td>{{ object.sort_order }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Description</th>
+            <td>{{ object.description|placeholder }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {% include 'inc/custom_fields_panel.html' %}
+    {% include 'inc/tags_panel.html' %}
+  </div>
+  <div class="col col-md-6">
+    {% if object.custom_directives %}
+    <div class="card">
+      <h5 class="card-header">Custom Directives</h5>
+      <div class="card-body">
+        <pre>{{ object.custom_directives }}</pre>
+      </div>
+    </div>
+    {% endif %}
+    {% include 'inc/comments_panel.html' %}
+  </div>
+</div>
+{% endblock content %}
