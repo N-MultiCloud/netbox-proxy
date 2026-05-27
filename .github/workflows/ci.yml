@@ -6,9 +6,14 @@ on:
   pull_request:
     branches: ["main"]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # ── Lint & format ─────────────────────────────────────────────────────────
   lint:
-    name: Lint
+    name: Lint & format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,20 +26,37 @@ jobs:
       - name: Install ruff
         run: pip install ruff
 
-      - name: Run ruff
+      - name: Check for lint errors
         run: ruff check netbox_proxy/
 
+      - name: Check code formatting
+        run: ruff format --check netbox_proxy/
+
+  # ── Tests ──────────────────────────────────────────────────────────────────
+  #
+  # Both netbox-nms and netbox-rpc are required_plugins; they must be
+  # installed and listed in PLUGINS before Django will load netbox_proxy or
+  # run its migrations (migration 0002 depends on netbox_rpc.0001_initial).
+  # We clone both from GitHub at --depth=1 so we don't rely on PyPI.
+  #
+  # The source-test script:
+  #   1. Clones the requested NetBox git tag.
+  #   2. Creates an isolated venv.
+  #   3. Installs NetBox requirements + netbox-nms + netbox-rpc + this plugin.
+  #   4. Writes a minimal configuration.py (reads env vars for DB/Redis).
+  #   5. Runs `manage.py check`, migration check, then `manage.py test`.
   test:
     name: Test (NetBox ${{ matrix.netbox-version }})
     runs-on: ubuntu-latest
+    needs: [lint]
     strategy:
       fail-fast: false
       matrix:
-        netbox-version: ["v4.5", "v4.6"]
+        netbox-version: ["v4.5.0", "v4.6.0"]
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:16-alpine
         env:
           POSTGRES_DB: netbox
           POSTGRES_USER: netbox
@@ -45,45 +67,48 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 5432:5432
+          - "5432:5432"
 
       redis:
-        image: redis:7
+        image: redis:7-alpine
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 6379:6379
-
-    container:
-      image: netboxcommunity/netbox:${{ matrix.netbox-version }}
+          - "6379:6379"
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install plugin and dependencies
-        run: |
-          pip install -e ".[dev]" || pip install -e .
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-      - name: Run Django checks
+      - name: Install system build dependencies
         run: |
-          cd /opt/netbox/netbox
-          python manage.py check --deploy 2>&1 || python manage.py check
-        env:
-          NETBOX_CONFIGURATION: netbox.configuration_testing
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev
 
-      - name: Run migrations check
+      - name: Clone netbox-nms dependency
         run: |
-          cd /opt/netbox/netbox
-          python manage.py makemigrations netbox_proxy --check --dry-run
-        env:
-          NETBOX_CONFIGURATION: netbox.configuration_testing
+          git clone --depth=1 https://github.com/N-MultiCloud/netbox-nms.git /tmp/netbox-nms
 
-      - name: Run tests
+      - name: Clone netbox-rpc dependency
         run: |
-          cd /opt/netbox/netbox
-          python manage.py test netbox_proxy --verbosity=2
+          git clone --depth=1 https://github.com/N-MultiCloud/netbox-rpc.git /tmp/netbox-rpc
+
+      - name: Run NetBox source test suite
         env:
-          NETBOX_CONFIGURATION: netbox.configuration_testing
+          NETBOX_REF: ${{ matrix.netbox-version }}
+          NETBOX_PLUGINS_JSON: '["netbox_nms", "netbox_rpc", "netbox_proxy"]'
+          MIGRATION_APPS: "netbox_nms netbox_rpc netbox_proxy"
+          TEST_LABELS: "netbox_proxy"
+          DB_HOST: localhost
+          DB_NAME: netbox
+          DB_USER: netbox
+          DB_PASSWORD: netbox
+          REDIS_HOST: localhost
+        run: bash .github/ci/netbox46-source-test.sh
