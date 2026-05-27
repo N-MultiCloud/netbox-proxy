@@ -1,58 +1,49 @@
 import strawberry_django
-from netbox.graphql.filter_mixins import autotype_decorator, BaseFilterMixin
+from netbox.graphql.filters import NetBoxModelFilter
 
-from netbox_proxy import filtersets, models
+from netbox_proxy import models
 
 
 @strawberry_django.filter_type(models.ProxyCluster, lookups=True)
-@autotype_decorator(filtersets.ProxyClusterFilterSet)
-class ProxyClusterFilter(BaseFilterMixin):
+class ProxyClusterFilter(NetBoxModelFilter):
     pass
 
 
 @strawberry_django.filter_type(models.ProxyNode, lookups=True)
-@autotype_decorator(filtersets.ProxyNodeFilterSet)
-class ProxyNodeFilter(BaseFilterMixin):
+class ProxyNodeFilter(NetBoxModelFilter):
     pass
 
 
 @strawberry_django.filter_type(models.ProxyVHost, lookups=True)
-@autotype_decorator(filtersets.ProxyVHostFilterSet)
-class ProxyVHostFilter(BaseFilterMixin):
+class ProxyVHostFilter(NetBoxModelFilter):
     pass
 
 
 @strawberry_django.filter_type(models.ProxyUpstream, lookups=True)
-@autotype_decorator(filtersets.ProxyUpstreamFilterSet)
-class ProxyUpstreamFilter(BaseFilterMixin):
+class ProxyUpstreamFilter(NetBoxModelFilter):
     pass
 
 
 @strawberry_django.filter_type(models.ProxyUpstreamServer, lookups=True)
-@autotype_decorator(filtersets.ProxyUpstreamServerFilterSet)
-class ProxyUpstreamServerFilter(BaseFilterMixin):
+class ProxyUpstreamServerFilter(NetBoxModelFilter):
     pass
 
 
 @strawberry_django.filter_type(models.ProxySSLCertificate, lookups=True)
-@autotype_decorator(filtersets.ProxySSLCertificateFilterSet)
-class ProxySSLCertificateFilter(BaseFilterMixin):
+class ProxySSLCertificateFilter(NetBoxModelFilter):
     pass
 
 
 @strawberry_django.filter_type(models.ProxyRateLimit, lookups=True)
-@autotype_decorator(filtersets.ProxyRateLimitFilterSet)
-class ProxyRateLimitFilter(BaseFilterMixin):
+class ProxyRateLimitFilter(NetBoxModelFilter):
     pass
 
 
 @strawberry_django.filter_type(models.ProxyLocation, lookups=True)
-@autotype_decorator(filtersets.ProxyLocationFilterSet)
-class ProxyLocationFilter(BaseFilterMixin):
+class ProxyLocationFilter(NetBoxModelFilter):
     pass
 
 
 @strawberry_django.filter_type(models.ProxyDeployment, lookups=True)
-@autotype_decorator(filtersets.ProxyDeploymentFilterSet)
-class ProxyDeploymentFilter(BaseFilterMixin):
+class ProxyDeploymentFilter(NetBoxModelFilter):
     pass
