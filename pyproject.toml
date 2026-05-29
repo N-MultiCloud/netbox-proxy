@@ -33,3 +33,10 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["netbox_proxy*"]
+
+[tool.setuptools.package-data]
+netbox_proxy = [
+    "templates/**/*.html",
+    "static/**/*",
+    "migrations/*.py",
+]

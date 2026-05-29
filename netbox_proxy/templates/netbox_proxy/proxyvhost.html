@@ -65,8 +65,8 @@
         </table>
       </div>
     </div>
-    {% include 'inc/custom_fields_panel.html' %}
-    {% include 'inc/tags_panel.html' %}
+    {% include 'inc/panels/custom_fields.html' %}
+    {% include 'inc/panels/tags.html' %}
   </div>
   <div class="col col-md-6">
     {% if object.custom_directives %}
@@ -77,7 +77,7 @@
       </div>
     </div>
     {% endif %}
-    {% include 'inc/comments_panel.html' %}
+    {% include 'inc/panels/comments.html' %}
   </div>
 </div>
 {% endblock content %}
