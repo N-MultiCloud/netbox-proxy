@@ -1,5 +1,5 @@
 from netbox.plugins.navigation import PluginMenu, PluginMenuButton, PluginMenuItem
-from utilities.choices import ButtonColorChoices
+from netbox.choices import ButtonColorChoices
 
 menu = PluginMenu(
     label="Proxy",

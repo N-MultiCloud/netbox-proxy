@@ -185,12 +185,18 @@ class ProxyDeploymentSerializer(NetBoxModelSerializer):
     )
     cluster = ProxyClusterSerializer(nested=True)
     node = ProxyNodeSerializer(nested=True, read_only=True)
+    node_id = serializers.PrimaryKeyRelatedField(
+        queryset=ProxyNode.objects.all(),
+        source="node",
+        allow_null=True,
+        required=False,
+    )
 
     class Meta:
         model = ProxyDeployment
         fields = (
             "id", "url", "display",
-            "cluster", "node", "status", "initiated_by", "rpc_execution",
+            "cluster", "node", "node_id", "status", "initiated_by", "rpc_execution",
             "config_snapshot", "previous_config",
             "started_at", "completed_at",
             "error_message",

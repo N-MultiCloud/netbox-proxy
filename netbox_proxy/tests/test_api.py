@@ -336,15 +336,16 @@ class ProxyDeploymentAPITestCase(
     @classmethod
     def setUpTestData(cls):
         cluster = _cluster("deploy-api-cluster")
+        node = ProxyNode.objects.create(cluster=cluster, name="deploy-api-node")
         ProxyDeployment.objects.bulk_create([
-            ProxyDeployment(cluster=cluster, status=DeployStatusChoices.STATUS_SUCCESS),
+            ProxyDeployment(cluster=cluster, node=node, status=DeployStatusChoices.STATUS_SUCCESS),
             ProxyDeployment(cluster=cluster, status=DeployStatusChoices.STATUS_FAILED),
             ProxyDeployment(cluster=cluster, status=DeployStatusChoices.STATUS_PENDING),
         ])
 
         cls.create_data = [
+            {"cluster": {"id": cluster.pk}, "node_id": node.pk},
             {"cluster": {"id": cluster.pk}},
-            {"cluster": {"id": cluster.pk}},
-            {"cluster": {"id": cluster.pk}},
+            {"cluster": {"id": cluster.pk}, "node_id": node.pk},
         ]
         cls.bulk_update_data = {"status": DeployStatusChoices.STATUS_PENDING}

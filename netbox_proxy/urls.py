@@ -1,50 +1,29 @@
-from django.urls import path
+from django.urls import include, path
 from utilities.urls import get_model_urls
 
-from . import views
+from . import views  # noqa: F401 - imports register @register_model_view routes
 
-urlpatterns = [
-    # ProxyCluster
-    path("clusters/", views.ProxyClusterListView.as_view(), name="proxycluster_list"),
-    *get_model_urls("netbox_proxy", "proxycluster"),
+_MODEL_ROUTES = (
+    ("proxycluster", "clusters"),
+    ("proxynode", "nodes"),
+    ("proxyvhost", "vhosts"),
+    ("proxyupstream", "upstreams"),
+    ("proxyupstreamserver", "upstream-servers"),
+    ("proxysslcertificate", "ssl-certificates"),
+    ("proxyratelimit", "rate-limits"),
+    ("proxylocation", "locations"),
+    ("proxydeployment", "deployments"),
+)
 
-    # ProxyNode
-    path("nodes/", views.ProxyNodeListView.as_view(), name="proxynode_list"),
-    *get_model_urls("netbox_proxy", "proxynode"),
+urlpatterns = []
 
-    # ProxyVHost
-    path("vhosts/", views.ProxyVHostListView.as_view(), name="proxyvhost_list"),
-    *get_model_urls("netbox_proxy", "proxyvhost"),
-
-    # ProxyUpstream
-    path("upstreams/", views.ProxyUpstreamListView.as_view(), name="proxyupstream_list"),
-    *get_model_urls("netbox_proxy", "proxyupstream"),
-
-    # ProxyUpstreamServer
-    path(
-        "upstream-servers/",
-        views.ProxyUpstreamServerListView.as_view(),
-        name="proxyupstreamserver_list",
-    ),
-    *get_model_urls("netbox_proxy", "proxyupstreamserver"),
-
-    # ProxySSLCertificate
-    path(
-        "ssl-certificates/",
-        views.ProxySSLCertificateListView.as_view(),
-        name="proxysslcertificate_list",
-    ),
-    *get_model_urls("netbox_proxy", "proxysslcertificate"),
-
-    # ProxyRateLimit
-    path("rate-limits/", views.ProxyRateLimitListView.as_view(), name="proxyratelimit_list"),
-    *get_model_urls("netbox_proxy", "proxyratelimit"),
-
-    # ProxyLocation
-    path("locations/", views.ProxyLocationListView.as_view(), name="proxylocation_list"),
-    *get_model_urls("netbox_proxy", "proxylocation"),
-
-    # ProxyDeployment
-    path("deployments/", views.ProxyDeploymentListView.as_view(), name="proxydeployment_list"),
-    *get_model_urls("netbox_proxy", "proxydeployment"),
-]
+for _model_name, _slug in _MODEL_ROUTES:
+    urlpatterns += [
+        path(
+            f"{_slug}/",
+            include(get_model_urls("netbox_proxy", _model_name, detail=False)),
+        ),
+        path(
+            f"{_slug}/<int:pk>/", include(get_model_urls("netbox_proxy", _model_name))
+        ),
+    ]
