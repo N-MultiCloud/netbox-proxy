@@ -1,6 +1,7 @@
 from django import forms
+from django.contrib.contenttypes.models import ContentType
 from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
-from utilities.forms.fields import CommentField, DynamicModelChoiceField
+from utilities.forms.fields import CommentField, ContentTypeChoiceField, DynamicModelChoiceField
 
 from .choices import (
     DeployStatusChoices,
@@ -33,6 +34,11 @@ class ProxyClusterForm(NetBoxModelForm):
 
 class ProxyNodeForm(NetBoxModelForm):
     cluster = DynamicModelChoiceField(queryset=ProxyCluster.objects.all())
+    assigned_object_type = ContentTypeChoiceField(
+        queryset=ContentType.objects.filter(model__in=["device", "virtualmachine"]),
+        required=False,
+        label="Assigned object type",
+    )
     comments = CommentField()
 
     class Meta:
@@ -40,6 +46,8 @@ class ProxyNodeForm(NetBoxModelForm):
         fields = (
             "cluster",
             "name",
+            "assigned_object_type",
+            "assigned_object_id",
             "management_ip",
             "nginx_config_path",
             "nginx_binary",
@@ -48,6 +56,15 @@ class ProxyNodeForm(NetBoxModelForm):
             "tags",
             "comments",
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Show a hint of the currently-linked object in the description
+        if self.instance and self.instance.pk and self.instance.assigned_object:
+            obj = self.instance.assigned_object
+            self.fields["assigned_object_id"].help_text = (
+                f"Currently linked to: {obj}"
+            )
 
 
 class ProxyVHostForm(NetBoxModelForm):
@@ -195,9 +212,19 @@ class ProxyDeploymentForm(NetBoxModelForm):
     node = DynamicModelChoiceField(queryset=ProxyNode.objects.all(), required=False)
     comments = CommentField()
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Import lazily to avoid circular dependency at module load time
+        from netbox_rpc.models import RPCExecution
+        self.fields["rpc_execution"] = DynamicModelChoiceField(
+            queryset=RPCExecution.objects.all(),
+            required=False,
+            label="RPC Execution",
+        )
+
     class Meta:
         model = ProxyDeployment
-        fields = ("cluster", "node", "description", "tags", "comments")
+        fields = ("cluster", "node", "rpc_execution", "description", "tags", "comments")
 
 
 # ── Filter forms ────────────────────────────────────────────────────────────
