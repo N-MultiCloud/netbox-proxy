@@ -11,3 +11,4 @@
 - No direct SSH — all execution delegated to netbox-rpc
 - ProxyNode uses GFK pattern (assigned_object_type + assigned_object_id)
 - DeployStatusChoices: pending, rendering, testing, deploying, reloading, success, failed, rolled_back
+- Management command: `import_nginx_vhosts --cluster ID --config FILE [--dry-run]` — idempotent import from nginx config

@@ -70,6 +70,32 @@ python -m compileall netbox_proxy
 python manage.py test netbox_proxy -v 2
 ```
 
+### Management Commands
+
+#### `import_nginx_vhosts`
+
+Parses an nginx config file and idempotently creates `ProxySSLCertificate`,
+`ProxyUpstream`, `ProxyUpstreamServer`, `ProxyVHost`, and `ProxyLocation`
+objects for every HTTPS (`*:443 ssl`) server block. HTTP redirect blocks
+(`return 301`), `stream {}`, and `geo {}` blocks are skipped.
+
+```bash
+# Dry-run — shows what would be created without writing anything
+manage.py import_nginx_vhosts --cluster 1 --config /path/to/nginx.conf --dry-run
+
+# Import for real
+manage.py import_nginx_vhosts --cluster 1 --config /path/to/nginx.conf
+```
+
+On the live host (inside the NetBox Docker container):
+
+```bash
+docker compose -f /opt/nmulticloud/deploy/compose/netbox.compose.yaml exec netbox \
+  /opt/netbox/venv/bin/python3 /opt/netbox/netbox/manage.py import_nginx_vhosts \
+  --cluster 1 \
+  --config /root/personal-context/nmulticloud-context.worktrees/nginx-nms-service/systemd/nginx-nms.conf
+```
+
 ## File Layout
 
 ```
@@ -94,6 +120,9 @@ netbox_proxy/
     schema.py
     filters.py
   templates/netbox_proxy/  # 9 detail templates
+  management/
+    commands/
+      import_nginx_vhosts.py  # idempotent nginx config importer
   migrations/
     0001_initial.py
     0002_seed_rpc_procedures.py
