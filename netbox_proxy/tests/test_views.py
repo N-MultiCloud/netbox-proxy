@@ -6,9 +6,6 @@ Uses NetBox's ViewTestCases helpers where available; falls back to
 authenticated GET checks for simpler coverage.
 """
 
-from django.test import TestCase
-from django.urls import reverse
-
 from utilities.testing import ViewTestCases
 
 from netbox_proxy.choices import DeployStatusChoices
@@ -29,6 +26,7 @@ from netbox_proxy.models import (
 # Shared helpers
 # ---------------------------------------------------------------------------
 
+
 def _cluster(name="view-cluster"):
     return ProxyCluster.objects.create(name=name)
 
@@ -47,6 +45,7 @@ def _upstream(cluster, name="view-upstream"):
 # ProxyCluster
 # ---------------------------------------------------------------------------
 
+
 class ProxyClusterViewTestCase(
     ViewTestCases.GetObjectViewTestCase,
     ViewTestCases.GetObjectChangelogViewTestCase,
@@ -59,11 +58,13 @@ class ProxyClusterViewTestCase(
 
     @classmethod
     def setUpTestData(cls):
-        ProxyCluster.objects.bulk_create([
-            ProxyCluster(name="vc-1"),
-            ProxyCluster(name="vc-2"),
-            ProxyCluster(name="vc-3"),
-        ])
+        ProxyCluster.objects.bulk_create(
+            [
+                ProxyCluster(name="vc-1"),
+                ProxyCluster(name="vc-2"),
+                ProxyCluster(name="vc-3"),
+            ]
+        )
 
         cls.form_data = {"name": "vc-new"}
         cls.csv_data = (
@@ -79,6 +80,7 @@ class ProxyClusterViewTestCase(
 # ProxyNode
 # ---------------------------------------------------------------------------
 
+
 class ProxyNodeViewTestCase(
     ViewTestCases.GetObjectViewTestCase,
     ViewTestCases.GetObjectChangelogViewTestCase,
@@ -92,11 +94,13 @@ class ProxyNodeViewTestCase(
     @classmethod
     def setUpTestData(cls):
         cluster = _cluster("node-view-cluster")
-        ProxyNode.objects.bulk_create([
-            ProxyNode(cluster=cluster, name="vn-1"),
-            ProxyNode(cluster=cluster, name="vn-2"),
-            ProxyNode(cluster=cluster, name="vn-3"),
-        ])
+        ProxyNode.objects.bulk_create(
+            [
+                ProxyNode(cluster=cluster, name="vn-1"),
+                ProxyNode(cluster=cluster, name="vn-2"),
+                ProxyNode(cluster=cluster, name="vn-3"),
+            ]
+        )
 
         cls.form_data = {"cluster": cluster.pk, "name": "vn-new"}
         cls.bulk_edit_data = {"management_ip": "10.0.9.9"}
@@ -105,6 +109,7 @@ class ProxyNodeViewTestCase(
 # ---------------------------------------------------------------------------
 # ProxySSLCertificate
 # ---------------------------------------------------------------------------
+
 
 class ProxySSLCertificateViewTestCase(
     ViewTestCases.GetObjectViewTestCase,
@@ -118,11 +123,13 @@ class ProxySSLCertificateViewTestCase(
 
     @classmethod
     def setUpTestData(cls):
-        ProxySSLCertificate.objects.bulk_create([
-            ProxySSLCertificate(name="vc-cert-1", domain="a.example.com"),
-            ProxySSLCertificate(name="vc-cert-2", domain="b.example.com"),
-            ProxySSLCertificate(name="vc-cert-3", domain="c.example.com"),
-        ])
+        ProxySSLCertificate.objects.bulk_create(
+            [
+                ProxySSLCertificate(name="vc-cert-1", domain="a.example.com"),
+                ProxySSLCertificate(name="vc-cert-2", domain="b.example.com"),
+                ProxySSLCertificate(name="vc-cert-3", domain="c.example.com"),
+            ]
+        )
 
         cls.form_data = {"name": "vc-cert-new", "domain": "new.example.com"}
         cls.bulk_edit_data = {"auto_renew": True}
@@ -131,6 +138,7 @@ class ProxySSLCertificateViewTestCase(
 # ---------------------------------------------------------------------------
 # ProxyVHost
 # ---------------------------------------------------------------------------
+
 
 class ProxyVHostViewTestCase(
     ViewTestCases.GetObjectViewTestCase,
@@ -145,23 +153,25 @@ class ProxyVHostViewTestCase(
     @classmethod
     def setUpTestData(cls):
         cluster = _cluster("vhost-view-cluster")
-        ProxyVHost.objects.bulk_create([
-            ProxyVHost(
-                cluster=cluster,
-                name="vvh-1",
-                server_names="v1.example.com",
-            ),
-            ProxyVHost(
-                cluster=cluster,
-                name="vvh-2",
-                server_names="v2.example.com",
-            ),
-            ProxyVHost(
-                cluster=cluster,
-                name="vvh-3",
-                server_names="v3.example.com",
-            ),
-        ])
+        ProxyVHost.objects.bulk_create(
+            [
+                ProxyVHost(
+                    cluster=cluster,
+                    name="vvh-1",
+                    server_names="v1.example.com",
+                ),
+                ProxyVHost(
+                    cluster=cluster,
+                    name="vvh-2",
+                    server_names="v2.example.com",
+                ),
+                ProxyVHost(
+                    cluster=cluster,
+                    name="vvh-3",
+                    server_names="v3.example.com",
+                ),
+            ]
+        )
 
         cls.form_data = {
             "cluster": cluster.pk,
@@ -180,6 +190,7 @@ class ProxyVHostViewTestCase(
 # ProxyUpstream
 # ---------------------------------------------------------------------------
 
+
 class ProxyUpstreamViewTestCase(
     ViewTestCases.GetObjectViewTestCase,
     ViewTestCases.GetObjectChangelogViewTestCase,
@@ -193,11 +204,13 @@ class ProxyUpstreamViewTestCase(
     @classmethod
     def setUpTestData(cls):
         cluster = _cluster("upstream-view-cluster")
-        ProxyUpstream.objects.bulk_create([
-            ProxyUpstream(cluster=cluster, name="vus-1"),
-            ProxyUpstream(cluster=cluster, name="vus-2"),
-            ProxyUpstream(cluster=cluster, name="vus-3"),
-        ])
+        ProxyUpstream.objects.bulk_create(
+            [
+                ProxyUpstream(cluster=cluster, name="vus-1"),
+                ProxyUpstream(cluster=cluster, name="vus-2"),
+                ProxyUpstream(cluster=cluster, name="vus-3"),
+            ]
+        )
 
         cls.form_data = {
             "cluster": cluster.pk,
@@ -215,6 +228,7 @@ class ProxyUpstreamViewTestCase(
 # ProxyUpstreamServer
 # ---------------------------------------------------------------------------
 
+
 class ProxyUpstreamServerViewTestCase(
     ViewTestCases.GetObjectViewTestCase,
     ViewTestCases.GetObjectChangelogViewTestCase,
@@ -229,11 +243,13 @@ class ProxyUpstreamServerViewTestCase(
     def setUpTestData(cls):
         cluster = _cluster("server-view-cluster")
         upstream = _upstream(cluster, "server-view-upstream")
-        ProxyUpstreamServer.objects.bulk_create([
-            ProxyUpstreamServer(upstream=upstream, address="10.1.0.1:80"),
-            ProxyUpstreamServer(upstream=upstream, address="10.1.0.2:80"),
-            ProxyUpstreamServer(upstream=upstream, address="10.1.0.3:80"),
-        ])
+        ProxyUpstreamServer.objects.bulk_create(
+            [
+                ProxyUpstreamServer(upstream=upstream, address="10.1.0.1:80"),
+                ProxyUpstreamServer(upstream=upstream, address="10.1.0.2:80"),
+                ProxyUpstreamServer(upstream=upstream, address="10.1.0.3:80"),
+            ]
+        )
 
         cls.form_data = {
             "upstream": upstream.pk,
@@ -252,6 +268,7 @@ class ProxyUpstreamServerViewTestCase(
 # ProxyRateLimit
 # ---------------------------------------------------------------------------
 
+
 class ProxyRateLimitViewTestCase(
     ViewTestCases.GetObjectViewTestCase,
     ViewTestCases.GetObjectChangelogViewTestCase,
@@ -264,11 +281,13 @@ class ProxyRateLimitViewTestCase(
 
     @classmethod
     def setUpTestData(cls):
-        ProxyRateLimit.objects.bulk_create([
-            ProxyRateLimit(name="vrl-1", rate="10r/s"),
-            ProxyRateLimit(name="vrl-2", rate="20r/s"),
-            ProxyRateLimit(name="vrl-3", rate="30r/s"),
-        ])
+        ProxyRateLimit.objects.bulk_create(
+            [
+                ProxyRateLimit(name="vrl-1", rate="10r/s"),
+                ProxyRateLimit(name="vrl-2", rate="20r/s"),
+                ProxyRateLimit(name="vrl-3", rate="30r/s"),
+            ]
+        )
 
         cls.form_data = {
             "name": "vrl-new",
@@ -282,6 +301,7 @@ class ProxyRateLimitViewTestCase(
 # ---------------------------------------------------------------------------
 # ProxyLocation
 # ---------------------------------------------------------------------------
+
 
 class ProxyLocationViewTestCase(
     ViewTestCases.GetObjectViewTestCase,
@@ -297,11 +317,13 @@ class ProxyLocationViewTestCase(
     def setUpTestData(cls):
         cluster = _cluster("location-view-cluster")
         vhost = _vhost(cluster, "location-view-vhost")
-        ProxyLocation.objects.bulk_create([
-            ProxyLocation(vhost=vhost, path="/view/a/"),
-            ProxyLocation(vhost=vhost, path="/view/b/"),
-            ProxyLocation(vhost=vhost, path="/view/c/"),
-        ])
+        ProxyLocation.objects.bulk_create(
+            [
+                ProxyLocation(vhost=vhost, path="/view/a/"),
+                ProxyLocation(vhost=vhost, path="/view/b/"),
+                ProxyLocation(vhost=vhost, path="/view/c/"),
+            ]
+        )
 
         cls.form_data = {
             "vhost": vhost.pk,
@@ -316,6 +338,7 @@ class ProxyLocationViewTestCase(
 # ProxyDeployment
 # ---------------------------------------------------------------------------
 
+
 class ProxyDeploymentViewTestCase(
     ViewTestCases.GetObjectViewTestCase,
     ViewTestCases.GetObjectChangelogViewTestCase,
@@ -329,17 +352,19 @@ class ProxyDeploymentViewTestCase(
     @classmethod
     def setUpTestData(cls):
         cluster = _cluster("deploy-view-cluster")
-        ProxyDeployment.objects.bulk_create([
-            ProxyDeployment(
-                cluster=cluster, status=DeployStatusChoices.STATUS_SUCCESS
-            ),
-            ProxyDeployment(
-                cluster=cluster, status=DeployStatusChoices.STATUS_FAILED
-            ),
-            ProxyDeployment(
-                cluster=cluster, status=DeployStatusChoices.STATUS_PENDING
-            ),
-        ])
+        ProxyDeployment.objects.bulk_create(
+            [
+                ProxyDeployment(
+                    cluster=cluster, status=DeployStatusChoices.STATUS_SUCCESS
+                ),
+                ProxyDeployment(
+                    cluster=cluster, status=DeployStatusChoices.STATUS_FAILED
+                ),
+                ProxyDeployment(
+                    cluster=cluster, status=DeployStatusChoices.STATUS_PENDING
+                ),
+            ]
+        )
 
         cls.form_data = {"cluster": cluster.pk}
         cls.bulk_edit_data = {"status": DeployStatusChoices.STATUS_PENDING}

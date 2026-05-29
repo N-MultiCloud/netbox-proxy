@@ -29,6 +29,7 @@ class ProxyCluster(NetBoxModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("plugins:netbox_proxy:proxycluster", args=[self.pk])
 
 
@@ -96,6 +97,7 @@ class ProxyNode(NetBoxModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("plugins:netbox_proxy:proxynode", args=[self.pk])
 
 
@@ -162,6 +164,7 @@ class ProxyVHost(NetBoxModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("plugins:netbox_proxy:proxyvhost", args=[self.pk])
 
 
@@ -218,6 +221,7 @@ class ProxyUpstream(NetBoxModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("plugins:netbox_proxy:proxyupstream", args=[self.pk])
 
 
@@ -260,6 +264,7 @@ class ProxyUpstreamServer(NetBoxModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("plugins:netbox_proxy:proxyupstreamserver", args=[self.pk])
 
 
@@ -308,6 +313,7 @@ class ProxySSLCertificate(NetBoxModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("plugins:netbox_proxy:proxysslcertificate", args=[self.pk])
 
 
@@ -354,6 +360,7 @@ class ProxyRateLimit(NetBoxModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("plugins:netbox_proxy:proxyratelimit", args=[self.pk])
 
 
@@ -415,6 +422,7 @@ class ProxyLocation(NetBoxModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("plugins:netbox_proxy:proxylocation", args=[self.pk])
 
 
@@ -483,4 +491,5 @@ class ProxyDeployment(NetBoxModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("plugins:netbox_proxy:proxydeployment", args=[self.pk])

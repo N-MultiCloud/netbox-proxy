@@ -56,7 +56,14 @@ class ProxyVHostFilterSet(NetBoxModelFilterSet):
 
     class Meta:
         model = ProxyVHost
-        fields = ("cluster_id", "name", "server_names", "ssl_mode", "listen_port", "is_enabled")
+        fields = (
+            "cluster_id",
+            "name",
+            "server_names",
+            "ssl_mode",
+            "listen_port",
+            "is_enabled",
+        )
 
 
 class ProxyUpstreamFilterSet(NetBoxModelFilterSet):

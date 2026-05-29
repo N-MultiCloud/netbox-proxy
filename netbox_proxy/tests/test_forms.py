@@ -33,8 +33,8 @@ from netbox_proxy.models import (
 # ProxyClusterForm
 # ---------------------------------------------------------------------------
 
-class ProxyClusterFormTestCase(TestCase):
 
+class ProxyClusterFormTestCase(TestCase):
     def test_valid_minimal(self):
         form = ProxyClusterForm(data={"name": "my-cluster"})
         self.assertTrue(form.is_valid(), form.errors)
@@ -53,8 +53,8 @@ class ProxyClusterFormTestCase(TestCase):
 # ProxyNodeForm
 # ---------------------------------------------------------------------------
 
-class ProxyNodeFormTestCase(TestCase):
 
+class ProxyNodeFormTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = ProxyCluster.objects.create(name="node-form-cluster")
@@ -78,8 +78,8 @@ class ProxyNodeFormTestCase(TestCase):
 # ProxySSLCertificateForm
 # ---------------------------------------------------------------------------
 
-class ProxySSLCertificateFormTestCase(TestCase):
 
+class ProxySSLCertificateFormTestCase(TestCase):
     def test_valid_minimal(self):
         form = ProxySSLCertificateForm(
             data={"name": "cert-form-1", "domain": "cert.example.com"}
@@ -101,8 +101,8 @@ class ProxySSLCertificateFormTestCase(TestCase):
 # ProxyVHostForm
 # ---------------------------------------------------------------------------
 
-class ProxyVHostFormTestCase(TestCase):
 
+class ProxyVHostFormTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = ProxyCluster.objects.create(name="vhost-form-cluster")
@@ -168,8 +168,8 @@ class ProxyVHostFormTestCase(TestCase):
 # ProxyUpstreamForm
 # ---------------------------------------------------------------------------
 
-class ProxyUpstreamFormTestCase(TestCase):
 
+class ProxyUpstreamFormTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = ProxyCluster.objects.create(name="upstream-form-cluster")
@@ -198,8 +198,8 @@ class ProxyUpstreamFormTestCase(TestCase):
 # ProxyUpstreamServerForm
 # ---------------------------------------------------------------------------
 
-class ProxyUpstreamServerFormTestCase(TestCase):
 
+class ProxyUpstreamServerFormTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cluster = ProxyCluster.objects.create(name="server-form-cluster")
@@ -237,8 +237,8 @@ class ProxyUpstreamServerFormTestCase(TestCase):
 # ProxyRateLimitForm
 # ---------------------------------------------------------------------------
 
-class ProxyRateLimitFormTestCase(TestCase):
 
+class ProxyRateLimitFormTestCase(TestCase):
     def test_valid_minimal(self):
         form = ProxyRateLimitForm(
             data={
@@ -277,8 +277,8 @@ class ProxyRateLimitFormTestCase(TestCase):
 # ProxyLocationForm
 # ---------------------------------------------------------------------------
 
-class ProxyLocationFormTestCase(TestCase):
 
+class ProxyLocationFormTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cluster = ProxyCluster.objects.create(name="loc-form-cluster")
@@ -288,9 +288,7 @@ class ProxyLocationFormTestCase(TestCase):
         cls.upstream = ProxyUpstream.objects.create(
             cluster=cluster, name="loc-form-upstream"
         )
-        cls.rate_limit = ProxyRateLimit.objects.create(
-            name="loc-form-rl", rate="10r/s"
-        )
+        cls.rate_limit = ProxyRateLimit.objects.create(name="loc-form-rl", rate="10r/s")
 
     def test_valid_minimal(self):
         form = ProxyLocationForm(
@@ -318,14 +316,12 @@ class ProxyLocationFormTestCase(TestCase):
 # ProxyDeploymentForm
 # ---------------------------------------------------------------------------
 
-class ProxyDeploymentFormTestCase(TestCase):
 
+class ProxyDeploymentFormTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = ProxyCluster.objects.create(name="dep-form-cluster")
-        cls.node = ProxyNode.objects.create(
-            cluster=cls.cluster, name="dep-form-node"
-        )
+        cls.node = ProxyNode.objects.create(cluster=cls.cluster, name="dep-form-node")
 
     def test_valid_minimal(self):
         form = ProxyDeploymentForm(data={"cluster": self.cluster.pk})

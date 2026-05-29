@@ -21,7 +21,17 @@ class ProxyClusterSerializer(NetBoxModelSerializer):
 
     class Meta:
         model = ProxyCluster
-        fields = ("id", "url", "display", "name", "description", "tags", "custom_fields", "created", "last_updated")
+        fields = (
+            "id",
+            "url",
+            "display",
+            "name",
+            "description",
+            "tags",
+            "custom_fields",
+            "created",
+            "last_updated",
+        )
 
 
 class ProxyNodeSerializer(NetBoxModelSerializer):
@@ -33,7 +43,9 @@ class ProxyNodeSerializer(NetBoxModelSerializer):
     class Meta:
         model = ProxyNode
         fields = (
-            "id", "url", "display",
+            "id",
+            "url",
+            "display",
             "cluster",
             "name",
             "assigned_object_type",
@@ -44,7 +56,10 @@ class ProxyNodeSerializer(NetBoxModelSerializer):
             "is_active",
             "last_seen",
             "description",
-            "tags", "custom_fields", "created", "last_updated",
+            "tags",
+            "custom_fields",
+            "created",
+            "last_updated",
         )
 
 
@@ -56,13 +71,23 @@ class ProxySSLCertificateSerializer(NetBoxModelSerializer):
     class Meta:
         model = ProxySSLCertificate
         fields = (
-            "id", "url", "display",
-            "name", "provider", "domain",
-            "cert_path", "key_path", "chain_path",
-            "auto_renew", "expires_at",
+            "id",
+            "url",
+            "display",
+            "name",
+            "provider",
+            "domain",
+            "cert_path",
+            "key_path",
+            "chain_path",
+            "auto_renew",
+            "expires_at",
             "custom_directives",
             "description",
-            "tags", "custom_fields", "created", "last_updated",
+            "tags",
+            "custom_fields",
+            "created",
+            "last_updated",
         )
 
 
@@ -82,15 +107,27 @@ class ProxyVHostSerializer(NetBoxModelSerializer):
     class Meta:
         model = ProxyVHost
         fields = (
-            "id", "url", "display",
+            "id",
+            "url",
+            "display",
             "cluster",
-            "name", "server_names", "listen_port", "listen_ssl_port",
-            "ssl_mode", "ssl_certificate", "ssl_certificate_id",
-            "is_enabled", "is_default_server",
-            "access_log", "error_log",
+            "name",
+            "server_names",
+            "listen_port",
+            "listen_ssl_port",
+            "ssl_mode",
+            "ssl_certificate",
+            "ssl_certificate_id",
+            "is_enabled",
+            "is_default_server",
+            "access_log",
+            "error_log",
             "custom_directives",
             "description",
-            "tags", "custom_fields", "created", "last_updated",
+            "tags",
+            "custom_fields",
+            "created",
+            "last_updated",
         )
 
 
@@ -103,12 +140,23 @@ class ProxyUpstreamSerializer(NetBoxModelSerializer):
     class Meta:
         model = ProxyUpstream
         fields = (
-            "id", "url", "display",
-            "cluster", "name", "protocol", "balance",
-            "keepalive", "health_check_enabled", "health_check_path", "health_check_interval",
+            "id",
+            "url",
+            "display",
+            "cluster",
+            "name",
+            "protocol",
+            "balance",
+            "keepalive",
+            "health_check_enabled",
+            "health_check_path",
+            "health_check_interval",
             "custom_directives",
             "description",
-            "tags", "custom_fields", "created", "last_updated",
+            "tags",
+            "custom_fields",
+            "created",
+            "last_updated",
         )
 
 
@@ -121,11 +169,22 @@ class ProxyUpstreamServerSerializer(NetBoxModelSerializer):
     class Meta:
         model = ProxyUpstreamServer
         fields = (
-            "id", "url", "display",
-            "upstream", "address", "weight", "max_fails", "fail_timeout",
-            "enabled", "is_backup", "is_down",
+            "id",
+            "url",
+            "display",
+            "upstream",
+            "address",
+            "weight",
+            "max_fails",
+            "fail_timeout",
+            "enabled",
+            "is_backup",
+            "is_down",
             "description",
-            "tags", "custom_fields", "created", "last_updated",
+            "tags",
+            "custom_fields",
+            "created",
+            "last_updated",
         )
 
 
@@ -144,11 +203,22 @@ class ProxyRateLimitSerializer(NetBoxModelSerializer):
     class Meta:
         model = ProxyRateLimit
         fields = (
-            "id", "url", "display",
-            "name", "vhost", "vhost_id", "zone_name", "key",
-            "rate", "burst", "nodelay",
+            "id",
+            "url",
+            "display",
+            "name",
+            "vhost",
+            "vhost_id",
+            "zone_name",
+            "key",
+            "rate",
+            "burst",
+            "nodelay",
             "description",
-            "tags", "custom_fields", "created", "last_updated",
+            "tags",
+            "custom_fields",
+            "created",
+            "last_updated",
         )
 
 
@@ -169,13 +239,24 @@ class ProxyLocationSerializer(NetBoxModelSerializer):
     class Meta:
         model = ProxyLocation
         fields = (
-            "id", "url", "display",
-            "vhost", "path", "match_type",
-            "upstream", "upstream_id", "rate_limit",
-            "proxy_pass_url", "proxy_set_headers", "sort_order",
+            "id",
+            "url",
+            "display",
+            "vhost",
+            "path",
+            "match_type",
+            "upstream",
+            "upstream_id",
+            "rate_limit",
+            "proxy_pass_url",
+            "proxy_set_headers",
+            "sort_order",
             "custom_directives",
             "description",
-            "tags", "custom_fields", "created", "last_updated",
+            "tags",
+            "custom_fields",
+            "created",
+            "last_updated",
         )
 
 
@@ -195,11 +276,23 @@ class ProxyDeploymentSerializer(NetBoxModelSerializer):
     class Meta:
         model = ProxyDeployment
         fields = (
-            "id", "url", "display",
-            "cluster", "node", "node_id", "status", "initiated_by", "rpc_execution",
-            "config_snapshot", "previous_config",
-            "started_at", "completed_at",
+            "id",
+            "url",
+            "display",
+            "cluster",
+            "node",
+            "node_id",
+            "status",
+            "initiated_by",
+            "rpc_execution",
+            "config_snapshot",
+            "previous_config",
+            "started_at",
+            "completed_at",
             "error_message",
             "description",
-            "tags", "custom_fields", "created", "last_updated",
+            "tags",
+            "custom_fields",
+            "created",
+            "last_updated",
         )

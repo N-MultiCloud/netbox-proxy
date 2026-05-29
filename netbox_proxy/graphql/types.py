@@ -1,4 +1,3 @@
-import strawberry
 import strawberry_django
 from netbox.graphql.types import NetBoxObjectType
 
@@ -17,7 +16,9 @@ from .filters import (
 )
 
 
-@strawberry_django.type(models.ProxyCluster, fields="__all__", filters=ProxyClusterFilter)
+@strawberry_django.type(
+    models.ProxyCluster, fields="__all__", filters=ProxyClusterFilter
+)
 class ProxyClusterType(NetBoxObjectType):
     pass
 
@@ -32,7 +33,9 @@ class ProxyVHostType(NetBoxObjectType):
     pass
 
 
-@strawberry_django.type(models.ProxyUpstream, fields="__all__", filters=ProxyUpstreamFilter)
+@strawberry_django.type(
+    models.ProxyUpstream, fields="__all__", filters=ProxyUpstreamFilter
+)
 class ProxyUpstreamType(NetBoxObjectType):
     pass
 
@@ -51,16 +54,22 @@ class ProxySSLCertificateType(NetBoxObjectType):
     pass
 
 
-@strawberry_django.type(models.ProxyRateLimit, fields="__all__", filters=ProxyRateLimitFilter)
+@strawberry_django.type(
+    models.ProxyRateLimit, fields="__all__", filters=ProxyRateLimitFilter
+)
 class ProxyRateLimitType(NetBoxObjectType):
     pass
 
 
-@strawberry_django.type(models.ProxyLocation, fields="__all__", filters=ProxyLocationFilter)
+@strawberry_django.type(
+    models.ProxyLocation, fields="__all__", filters=ProxyLocationFilter
+)
 class ProxyLocationType(NetBoxObjectType):
     pass
 
 
-@strawberry_django.type(models.ProxyDeployment, fields="__all__", filters=ProxyDeploymentFilter)
+@strawberry_django.type(
+    models.ProxyDeployment, fields="__all__", filters=ProxyDeploymentFilter
+)
 class ProxyDeploymentType(NetBoxObjectType):
     pass

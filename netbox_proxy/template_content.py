@@ -10,6 +10,7 @@ class DeviceProxyNodeTab(PluginTemplateExtension):
             return ""
         from netbox_proxy.models import ProxyNode
         from django.contrib.contenttypes.models import ContentType
+
         ct = ContentType.objects.get_for_model(device)
         nodes = ProxyNode.objects.filter(
             assigned_object_type=ct,

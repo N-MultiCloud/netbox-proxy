@@ -33,14 +33,23 @@ Required plugins: `netbox-nms >= 0.1.2`, `netbox-rpc >= 0.1.0`
 | `ProxyRateLimit` | rate limiting zone |
 | `ProxyDeployment` | deployment audit record (FK → RPCExecution) |
 
-## RPC Procedures (seeded by migration 0002)
+## RPC Procedures (seeded by migrations 0002 and 0003)
 
-| handler_id | name |
-|---|---|
-| `service.nginx.config_test` | `service.nginx.1.config_test` |
-| `service.nginx.config_deploy` | `service.nginx.1.config_deploy` |
-| `service.nginx.reload` | `service.nginx.1.reload` |
-| `service.nginx.rollback` | `service.nginx.1.rollback` |
+| handler_id | name | approval_required |
+|---|---|---|
+| `service.nginx.config_test` | `service.nginx.1.config_test` | False (read-only) |
+| `service.nginx.config_deploy` | `service.nginx.1.config_deploy` | **True** (write) |
+| `service.nginx.reload` | `service.nginx.1.reload` | **True** (write) |
+| `service.nginx.rollback` | `service.nginx.1.rollback` | **True** (write) |
+
+Migration `0003_update_nginx_procedure_approvals` sets `approval_required=True` for the
+three write operations. Any caller without `netbox_rpc.approve_rpcprocedure` will receive
+a 403 when attempting `config_deploy`, `reload`, or `rollback`.
+
+Each nginx procedure has a corresponding normalizer in
+`netbox-rpc/netbox_rpc/jobs.py::normalize_execution_params()` (the `NGINX_1_*` branches).
+If you add new nginx procedures, register their names in `netbox-rpc/netbox_rpc/constants.py`
+and add the matching normalizer branch before seeding the procedure.
 
 ## REST API
 

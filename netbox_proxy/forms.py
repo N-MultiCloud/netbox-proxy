@@ -1,7 +1,11 @@
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
-from utilities.forms.fields import CommentField, ContentTypeChoiceField, DynamicModelChoiceField
+from utilities.forms.fields import (
+    CommentField,
+    ContentTypeChoiceField,
+    DynamicModelChoiceField,
+)
 
 from .choices import (
     DeployStatusChoices,
@@ -62,9 +66,7 @@ class ProxyNodeForm(NetBoxModelForm):
         # Show a hint of the currently-linked object in the description
         if self.instance and self.instance.pk and self.instance.assigned_object:
             obj = self.instance.assigned_object
-            self.fields["assigned_object_id"].help_text = (
-                f"Currently linked to: {obj}"
-            )
+            self.fields["assigned_object_id"].help_text = f"Currently linked to: {obj}"
 
 
 class ProxyVHostForm(NetBoxModelForm):
@@ -185,8 +187,12 @@ class ProxyRateLimitForm(NetBoxModelForm):
 
 class ProxyLocationForm(NetBoxModelForm):
     vhost = DynamicModelChoiceField(queryset=ProxyVHost.objects.all())
-    upstream = DynamicModelChoiceField(queryset=ProxyUpstream.objects.all(), required=False)
-    rate_limit = DynamicModelChoiceField(queryset=ProxyRateLimit.objects.all(), required=False)
+    upstream = DynamicModelChoiceField(
+        queryset=ProxyUpstream.objects.all(), required=False
+    )
+    rate_limit = DynamicModelChoiceField(
+        queryset=ProxyRateLimit.objects.all(), required=False
+    )
     comments = CommentField()
 
     class Meta:
@@ -216,6 +222,7 @@ class ProxyDeploymentForm(NetBoxModelForm):
         super().__init__(*args, **kwargs)
         # Import lazily to avoid circular dependency at module load time
         from netbox_rpc.models import RPCExecution
+
         self.fields["rpc_execution"] = DynamicModelChoiceField(
             queryset=RPCExecution.objects.all(),
             required=False,
@@ -228,6 +235,7 @@ class ProxyDeploymentForm(NetBoxModelForm):
 
 
 # ── Filter forms ────────────────────────────────────────────────────────────
+
 
 class ProxyClusterFilterForm(NetBoxModelFilterSetForm):
     model = ProxyCluster

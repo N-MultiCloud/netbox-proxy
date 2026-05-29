@@ -25,13 +25,22 @@ class ProxyClusterViewSet(NetBoxModelViewSet):
     @action(detail=True, methods=["get"], url_path="nodes")
     def nodes(self, request, pk=None):
         cluster = self.get_object()
-        qs = models.ProxyNode.objects.filter(cluster=cluster)
-        serializer = ProxyNodeSerializer(qs, many=True, context={"request": request})
+        qs = models.ProxyNode.objects.filter(cluster=cluster).select_related("cluster")
+        page = self.paginate_queryset(qs)
+        serializer = ProxyNodeSerializer(
+            page if page is not None else qs,
+            many=True,
+            context={"request": request},
+        )
+        if page is not None:
+            return self.get_paginated_response(serializer.data)
         return Response(serializer.data)
 
 
 class ProxyNodeViewSet(NetBoxModelViewSet):
-    queryset = models.ProxyNode.objects.select_related("cluster").prefetch_related("tags")
+    queryset = models.ProxyNode.objects.select_related("cluster").prefetch_related(
+        "tags"
+    )
     serializer_class = ProxyNodeSerializer
     filterset_class = filtersets.ProxyNodeFilterSet
 
@@ -45,7 +54,9 @@ class ProxyVHostViewSet(NetBoxModelViewSet):
 
 
 class ProxyUpstreamViewSet(NetBoxModelViewSet):
-    queryset = models.ProxyUpstream.objects.select_related("cluster").prefetch_related("tags")
+    queryset = models.ProxyUpstream.objects.select_related("cluster").prefetch_related(
+        "tags"
+    )
     serializer_class = ProxyUpstreamSerializer
     filterset_class = filtersets.ProxyUpstreamFilterSet
 

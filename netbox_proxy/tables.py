@@ -36,8 +36,25 @@ class ProxyNodeTable(NetBoxTable):
 
     class Meta(NetBoxTable.Meta):
         model = ProxyNode
-        fields = ("pk", "id", "cluster", "name", "assigned_object", "management_ip", "is_active", "description", "tags", "actions")
-        default_columns = ("cluster", "name", "assigned_object", "management_ip", "is_active")
+        fields = (
+            "pk",
+            "id",
+            "cluster",
+            "name",
+            "assigned_object",
+            "management_ip",
+            "is_active",
+            "description",
+            "tags",
+            "actions",
+        )
+        default_columns = (
+            "cluster",
+            "name",
+            "assigned_object",
+            "management_ip",
+            "is_active",
+        )
 
 
 class ProxyVHostTable(NetBoxTable):
@@ -62,7 +79,14 @@ class ProxyVHostTable(NetBoxTable):
             "tags",
             "actions",
         )
-        default_columns = ("cluster", "name", "server_names", "listen_port", "ssl_mode", "is_enabled")
+        default_columns = (
+            "cluster",
+            "name",
+            "server_names",
+            "listen_port",
+            "ssl_mode",
+            "is_enabled",
+        )
 
 
 class ProxyUpstreamTable(NetBoxTable):
@@ -87,7 +111,13 @@ class ProxyUpstreamTable(NetBoxTable):
             "tags",
             "actions",
         )
-        default_columns = ("cluster", "name", "protocol", "balance", "health_check_enabled")
+        default_columns = (
+            "cluster",
+            "name",
+            "protocol",
+            "balance",
+            "health_check_enabled",
+        )
 
 
 class ProxyUpstreamServerTable(NetBoxTable):
@@ -112,7 +142,14 @@ class ProxyUpstreamServerTable(NetBoxTable):
             "tags",
             "actions",
         )
-        default_columns = ("upstream", "address", "weight", "enabled", "is_backup", "is_down")
+        default_columns = (
+            "upstream",
+            "address",
+            "weight",
+            "enabled",
+            "is_backup",
+            "is_down",
+        )
 
 
 class ProxySSLCertificateTable(NetBoxTable):
@@ -143,7 +180,18 @@ class ProxyRateLimitTable(NetBoxTable):
 
     class Meta(NetBoxTable.Meta):
         model = ProxyRateLimit
-        fields = ("pk", "id", "name", "zone_name", "rate", "burst", "nodelay", "description", "tags", "actions")
+        fields = (
+            "pk",
+            "id",
+            "name",
+            "zone_name",
+            "rate",
+            "burst",
+            "nodelay",
+            "description",
+            "tags",
+            "actions",
+        )
         default_columns = ("name", "zone_name", "rate", "burst", "nodelay")
 
 
@@ -192,4 +240,12 @@ class ProxyDeploymentTable(NetBoxTable):
             "tags",
             "actions",
         )
-        default_columns = ("cluster", "node", "status", "initiated_by", "rpc_execution", "started_at", "created")
+        default_columns = (
+            "cluster",
+            "node",
+            "status",
+            "initiated_by",
+            "rpc_execution",
+            "started_at",
+            "created",
+        )

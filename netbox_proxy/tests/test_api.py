@@ -27,6 +27,7 @@ from netbox_proxy.models import (
 # Shared helpers
 # ---------------------------------------------------------------------------
 
+
 def _cluster(name="api-cluster"):
     return ProxyCluster.objects.create(name=name)
 
@@ -49,6 +50,7 @@ def _upstream(cluster, name="api-upstream"):
 # ProxyCluster
 # ---------------------------------------------------------------------------
 
+
 class ProxyClusterAPITestCase(
     APIViewTestCases.GetObjectViewTestCase,
     APIViewTestCases.ListObjectsViewTestCase,
@@ -62,11 +64,13 @@ class ProxyClusterAPITestCase(
 
     @classmethod
     def setUpTestData(cls):
-        ProxyCluster.objects.bulk_create([
-            ProxyCluster(name="api-cluster-1"),
-            ProxyCluster(name="api-cluster-2"),
-            ProxyCluster(name="api-cluster-3"),
-        ])
+        ProxyCluster.objects.bulk_create(
+            [
+                ProxyCluster(name="api-cluster-1"),
+                ProxyCluster(name="api-cluster-2"),
+                ProxyCluster(name="api-cluster-3"),
+            ]
+        )
 
         cls.create_data = [
             {"name": "new-cluster-a"},
@@ -79,6 +83,7 @@ class ProxyClusterAPITestCase(
 # ---------------------------------------------------------------------------
 # ProxyNode
 # ---------------------------------------------------------------------------
+
 
 class ProxyNodeAPITestCase(
     APIViewTestCases.GetObjectViewTestCase,
@@ -94,11 +99,13 @@ class ProxyNodeAPITestCase(
     @classmethod
     def setUpTestData(cls):
         cluster = _cluster("node-api-cluster")
-        ProxyNode.objects.bulk_create([
-            ProxyNode(cluster=cluster, name="api-node-1"),
-            ProxyNode(cluster=cluster, name="api-node-2"),
-            ProxyNode(cluster=cluster, name="api-node-3"),
-        ])
+        ProxyNode.objects.bulk_create(
+            [
+                ProxyNode(cluster=cluster, name="api-node-1"),
+                ProxyNode(cluster=cluster, name="api-node-2"),
+                ProxyNode(cluster=cluster, name="api-node-3"),
+            ]
+        )
 
         cls.create_data = [
             {"cluster": {"id": cluster.pk}, "name": "new-node-a"},
@@ -111,6 +118,7 @@ class ProxyNodeAPITestCase(
 # ---------------------------------------------------------------------------
 # ProxySSLCertificate
 # ---------------------------------------------------------------------------
+
 
 class ProxySSLCertificateAPITestCase(
     APIViewTestCases.GetObjectViewTestCase,
@@ -125,11 +133,13 @@ class ProxySSLCertificateAPITestCase(
 
     @classmethod
     def setUpTestData(cls):
-        ProxySSLCertificate.objects.bulk_create([
-            ProxySSLCertificate(name="api-cert-1", domain="a.example.com"),
-            ProxySSLCertificate(name="api-cert-2", domain="b.example.com"),
-            ProxySSLCertificate(name="api-cert-3", domain="c.example.com"),
-        ])
+        ProxySSLCertificate.objects.bulk_create(
+            [
+                ProxySSLCertificate(name="api-cert-1", domain="a.example.com"),
+                ProxySSLCertificate(name="api-cert-2", domain="b.example.com"),
+                ProxySSLCertificate(name="api-cert-3", domain="c.example.com"),
+            ]
+        )
 
         cls.create_data = [
             {"name": "new-cert-a", "domain": "new-a.example.com"},
@@ -142,6 +152,7 @@ class ProxySSLCertificateAPITestCase(
 # ---------------------------------------------------------------------------
 # ProxyVHost
 # ---------------------------------------------------------------------------
+
 
 class ProxyVHostAPITestCase(
     APIViewTestCases.GetObjectViewTestCase,
@@ -157,17 +168,19 @@ class ProxyVHostAPITestCase(
     @classmethod
     def setUpTestData(cls):
         cluster = _cluster("vhost-api-cluster")
-        ProxyVHost.objects.bulk_create([
-            ProxyVHost(
-                cluster=cluster, name="api-vhost-1", server_names="v1.example.com"
-            ),
-            ProxyVHost(
-                cluster=cluster, name="api-vhost-2", server_names="v2.example.com"
-            ),
-            ProxyVHost(
-                cluster=cluster, name="api-vhost-3", server_names="v3.example.com"
-            ),
-        ])
+        ProxyVHost.objects.bulk_create(
+            [
+                ProxyVHost(
+                    cluster=cluster, name="api-vhost-1", server_names="v1.example.com"
+                ),
+                ProxyVHost(
+                    cluster=cluster, name="api-vhost-2", server_names="v2.example.com"
+                ),
+                ProxyVHost(
+                    cluster=cluster, name="api-vhost-3", server_names="v3.example.com"
+                ),
+            ]
+        )
 
         cls.create_data = [
             {
@@ -193,6 +206,7 @@ class ProxyVHostAPITestCase(
 # ProxyUpstream
 # ---------------------------------------------------------------------------
 
+
 class ProxyUpstreamAPITestCase(
     APIViewTestCases.GetObjectViewTestCase,
     APIViewTestCases.ListObjectsViewTestCase,
@@ -207,11 +221,13 @@ class ProxyUpstreamAPITestCase(
     @classmethod
     def setUpTestData(cls):
         cluster = _cluster("upstream-api-cluster")
-        ProxyUpstream.objects.bulk_create([
-            ProxyUpstream(cluster=cluster, name="api-upstream-1"),
-            ProxyUpstream(cluster=cluster, name="api-upstream-2"),
-            ProxyUpstream(cluster=cluster, name="api-upstream-3"),
-        ])
+        ProxyUpstream.objects.bulk_create(
+            [
+                ProxyUpstream(cluster=cluster, name="api-upstream-1"),
+                ProxyUpstream(cluster=cluster, name="api-upstream-2"),
+                ProxyUpstream(cluster=cluster, name="api-upstream-3"),
+            ]
+        )
 
         cls.create_data = [
             {"cluster": {"id": cluster.pk}, "name": "new-upstream-a"},
@@ -224,6 +240,7 @@ class ProxyUpstreamAPITestCase(
 # ---------------------------------------------------------------------------
 # ProxyUpstreamServer
 # ---------------------------------------------------------------------------
+
 
 class ProxyUpstreamServerAPITestCase(
     APIViewTestCases.GetObjectViewTestCase,
@@ -240,11 +257,13 @@ class ProxyUpstreamServerAPITestCase(
     def setUpTestData(cls):
         cluster = _cluster("server-api-cluster")
         upstream = _upstream(cluster, "server-api-upstream")
-        ProxyUpstreamServer.objects.bulk_create([
-            ProxyUpstreamServer(upstream=upstream, address="10.0.0.1:8080"),
-            ProxyUpstreamServer(upstream=upstream, address="10.0.0.2:8080"),
-            ProxyUpstreamServer(upstream=upstream, address="10.0.0.3:8080"),
-        ])
+        ProxyUpstreamServer.objects.bulk_create(
+            [
+                ProxyUpstreamServer(upstream=upstream, address="10.0.0.1:8080"),
+                ProxyUpstreamServer(upstream=upstream, address="10.0.0.2:8080"),
+                ProxyUpstreamServer(upstream=upstream, address="10.0.0.3:8080"),
+            ]
+        )
 
         cls.create_data = [
             {"upstream": {"id": upstream.pk}, "address": "10.0.0.10:8080"},
@@ -257,6 +276,7 @@ class ProxyUpstreamServerAPITestCase(
 # ---------------------------------------------------------------------------
 # ProxyRateLimit
 # ---------------------------------------------------------------------------
+
 
 class ProxyRateLimitAPITestCase(
     APIViewTestCases.GetObjectViewTestCase,
@@ -271,11 +291,13 @@ class ProxyRateLimitAPITestCase(
 
     @classmethod
     def setUpTestData(cls):
-        ProxyRateLimit.objects.bulk_create([
-            ProxyRateLimit(name="api-rl-1", rate="10r/s"),
-            ProxyRateLimit(name="api-rl-2", rate="20r/s"),
-            ProxyRateLimit(name="api-rl-3", rate="30r/s"),
-        ])
+        ProxyRateLimit.objects.bulk_create(
+            [
+                ProxyRateLimit(name="api-rl-1", rate="10r/s"),
+                ProxyRateLimit(name="api-rl-2", rate="20r/s"),
+                ProxyRateLimit(name="api-rl-3", rate="30r/s"),
+            ]
+        )
 
         cls.create_data = [
             {"name": "new-rl-a", "rate": "5r/s"},
@@ -288,6 +310,7 @@ class ProxyRateLimitAPITestCase(
 # ---------------------------------------------------------------------------
 # ProxyLocation
 # ---------------------------------------------------------------------------
+
 
 class ProxyLocationAPITestCase(
     APIViewTestCases.GetObjectViewTestCase,
@@ -304,11 +327,13 @@ class ProxyLocationAPITestCase(
     def setUpTestData(cls):
         cluster = _cluster("location-api-cluster")
         vhost = _vhost(cluster, "location-api-vhost")
-        ProxyLocation.objects.bulk_create([
-            ProxyLocation(vhost=vhost, path="/api/v1/"),
-            ProxyLocation(vhost=vhost, path="/api/v2/"),
-            ProxyLocation(vhost=vhost, path="/api/v3/"),
-        ])
+        ProxyLocation.objects.bulk_create(
+            [
+                ProxyLocation(vhost=vhost, path="/api/v1/"),
+                ProxyLocation(vhost=vhost, path="/api/v2/"),
+                ProxyLocation(vhost=vhost, path="/api/v3/"),
+            ]
+        )
 
         cls.create_data = [
             {"vhost": {"id": vhost.pk}, "path": "/new/a/"},
@@ -321,6 +346,7 @@ class ProxyLocationAPITestCase(
 # ---------------------------------------------------------------------------
 # ProxyDeployment
 # ---------------------------------------------------------------------------
+
 
 class ProxyDeploymentAPITestCase(
     APIViewTestCases.GetObjectViewTestCase,
@@ -337,11 +363,21 @@ class ProxyDeploymentAPITestCase(
     def setUpTestData(cls):
         cluster = _cluster("deploy-api-cluster")
         node = ProxyNode.objects.create(cluster=cluster, name="deploy-api-node")
-        ProxyDeployment.objects.bulk_create([
-            ProxyDeployment(cluster=cluster, node=node, status=DeployStatusChoices.STATUS_SUCCESS),
-            ProxyDeployment(cluster=cluster, status=DeployStatusChoices.STATUS_FAILED),
-            ProxyDeployment(cluster=cluster, status=DeployStatusChoices.STATUS_PENDING),
-        ])
+        ProxyDeployment.objects.bulk_create(
+            [
+                ProxyDeployment(
+                    cluster=cluster,
+                    node=node,
+                    status=DeployStatusChoices.STATUS_SUCCESS,
+                ),
+                ProxyDeployment(
+                    cluster=cluster, status=DeployStatusChoices.STATUS_FAILED
+                ),
+                ProxyDeployment(
+                    cluster=cluster, status=DeployStatusChoices.STATUS_PENDING
+                ),
+            ]
+        )
 
         cls.create_data = [
             {"cluster": {"id": cluster.pk}, "node_id": node.pk},

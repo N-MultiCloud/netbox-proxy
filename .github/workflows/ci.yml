@@ -92,13 +92,23 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libpq-dev
 
+      - name: Configure Gitea credentials
+        env:
+          REPOS_PAT: ${{ secrets.REPOS_PAT }}
+        run: |
+          if [ -n "${REPOS_PAT}" ]; then
+            git config --global credential.helper store
+            printf 'https://x-access-token:%s@git.nmulti.cloud\n' "${REPOS_PAT}" \
+              >> ~/.git-credentials
+          fi
+
       - name: Clone netbox-nms dependency
         run: |
-          git clone --depth=1 https://github.com/N-MultiCloud/netbox-nms.git /tmp/netbox-nms
+          git clone --depth=1 https://git.nmulti.cloud/N-MultiCloud/netbox-nms.git /tmp/netbox-nms
 
       - name: Clone netbox-rpc dependency
         run: |
-          git clone --depth=1 https://github.com/N-MultiCloud/netbox-rpc.git /tmp/netbox-rpc
+          git clone --depth=1 https://git.nmulti.cloud/N-MultiCloud/netbox-rpc.git /tmp/netbox-rpc
 
       - name: Run NetBox source test suite
         env:

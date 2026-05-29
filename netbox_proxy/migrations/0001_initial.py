@@ -101,7 +101,12 @@ class Migration(migrations.Migration):
                 ("custom_field_data", models.JSONField(blank=True, default=dict)),
                 ("name", models.CharField(max_length=255, unique=True)),
                 ("zone_name", models.CharField(blank=True, max_length=255)),
-                ("key", models.CharField(blank=True, default="$binary_remote_addr", max_length=255)),
+                (
+                    "key",
+                    models.CharField(
+                        blank=True, default="$binary_remote_addr", max_length=255
+                    ),
+                ),
                 ("rate", models.CharField(max_length=50)),
                 ("burst", models.PositiveIntegerField(default=5)),
                 ("nodelay", models.BooleanField(default=False)),
@@ -139,8 +144,16 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("management_ip", models.CharField(blank=True, max_length=255)),
-                ("nginx_config_path", models.CharField(blank=True, default="/etc/nginx", max_length=500)),
-                ("nginx_binary", models.CharField(blank=True, default="/usr/sbin/nginx", max_length=500)),
+                (
+                    "nginx_config_path",
+                    models.CharField(blank=True, default="/etc/nginx", max_length=500),
+                ),
+                (
+                    "nginx_binary",
+                    models.CharField(
+                        blank=True, default="/usr/sbin/nginx", max_length=500
+                    ),
+                ),
                 ("is_active", models.BooleanField(default=True)),
                 ("last_seen", models.DateTimeField(blank=True, null=True)),
                 ("description", models.CharField(blank=True, max_length=500)),
@@ -292,7 +305,10 @@ class Migration(migrations.Migration):
                 ),
                 ("keepalive", models.PositiveIntegerField(default=0)),
                 ("health_check_enabled", models.BooleanField(default=False)),
-                ("health_check_path", models.CharField(blank=True, default="/health", max_length=500)),
+                (
+                    "health_check_path",
+                    models.CharField(blank=True, default="/health", max_length=500),
+                ),
                 ("health_check_interval", models.PositiveIntegerField(default=5)),
                 ("custom_directives", models.TextField(blank=True)),
                 ("description", models.CharField(blank=True, max_length=500)),

@@ -306,7 +306,9 @@ class ProxyLocationBulkDeleteView(generic.BulkDeleteView):
 
 @register_model_view(models.ProxyDeployment, "list", path="", detail=False)
 class ProxyDeploymentListView(generic.ObjectListView):
-    queryset = models.ProxyDeployment.objects.select_related("cluster", "node", "initiated_by", "rpc_execution")
+    queryset = models.ProxyDeployment.objects.select_related(
+        "cluster", "node", "initiated_by", "rpc_execution"
+    )
     table = tables.ProxyDeploymentTable
     filterset = filtersets.ProxyDeploymentFilterSet
     filterset_form = forms.ProxyDeploymentFilterForm

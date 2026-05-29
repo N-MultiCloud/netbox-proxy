@@ -29,10 +29,14 @@ class NetBoxProxyQuery:
     proxy_upstream_list: list[ProxyUpstreamType] = strawberry_django.field()
 
     proxy_upstream_server: ProxyUpstreamServerType = strawberry_django.field()
-    proxy_upstream_server_list: list[ProxyUpstreamServerType] = strawberry_django.field()
+    proxy_upstream_server_list: list[ProxyUpstreamServerType] = (
+        strawberry_django.field()
+    )
 
     proxy_ssl_certificate: ProxySSLCertificateType = strawberry_django.field()
-    proxy_ssl_certificate_list: list[ProxySSLCertificateType] = strawberry_django.field()
+    proxy_ssl_certificate_list: list[ProxySSLCertificateType] = (
+        strawberry_django.field()
+    )
 
     proxy_rate_limit: ProxyRateLimitType = strawberry_django.field()
     proxy_rate_limit_list: list[ProxyRateLimitType] = strawberry_django.field()

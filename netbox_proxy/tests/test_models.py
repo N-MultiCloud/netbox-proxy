@@ -34,6 +34,7 @@ from netbox_proxy.models import (
 # Shared fixtures
 # ---------------------------------------------------------------------------
 
+
 def _cluster(name="test-cluster"):
     return ProxyCluster.objects.create(name=name)
 
@@ -58,8 +59,8 @@ def _upstream(cluster, name="upstream1"):
 # ProxyCluster
 # ---------------------------------------------------------------------------
 
-class ProxyClusterTestCase(TestCase):
 
+class ProxyClusterTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = _cluster()
@@ -81,8 +82,8 @@ class ProxyClusterTestCase(TestCase):
 # ProxyNode
 # ---------------------------------------------------------------------------
 
-class ProxyNodeTestCase(TestCase):
 
+class ProxyNodeTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = _cluster("node-cluster")
@@ -139,8 +140,8 @@ class ProxyNodeTestCase(TestCase):
 # ProxySSLCertificate
 # ---------------------------------------------------------------------------
 
-class ProxySSLCertificateTestCase(TestCase):
 
+class ProxySSLCertificateTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cert = _ssl_cert("wildcard-cert")
@@ -164,8 +165,8 @@ class ProxySSLCertificateTestCase(TestCase):
 # ProxyVHost
 # ---------------------------------------------------------------------------
 
-class ProxyVHostTestCase(TestCase):
 
+class ProxyVHostTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = _cluster("vhost-cluster")
@@ -211,8 +212,8 @@ class ProxyVHostTestCase(TestCase):
 # ProxyUpstream
 # ---------------------------------------------------------------------------
 
-class ProxyUpstreamTestCase(TestCase):
 
+class ProxyUpstreamTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = _cluster("upstream-cluster")
@@ -235,8 +236,8 @@ class ProxyUpstreamTestCase(TestCase):
 # ProxyUpstreamServer
 # ---------------------------------------------------------------------------
 
-class ProxyUpstreamServerTestCase(TestCase):
 
+class ProxyUpstreamServerTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = _cluster("server-cluster")
@@ -271,8 +272,8 @@ class ProxyUpstreamServerTestCase(TestCase):
 # ProxyRateLimit
 # ---------------------------------------------------------------------------
 
-class ProxyRateLimitTestCase(TestCase):
 
+class ProxyRateLimitTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = _cluster("rl-cluster")
@@ -310,8 +311,8 @@ class ProxyRateLimitTestCase(TestCase):
 # ProxyLocation
 # ---------------------------------------------------------------------------
 
-class ProxyLocationTestCase(TestCase):
 
+class ProxyLocationTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = _cluster("loc-cluster")
@@ -354,8 +355,8 @@ class ProxyLocationTestCase(TestCase):
 # ProxyDeployment
 # ---------------------------------------------------------------------------
 
-class ProxyDeploymentTestCase(TestCase):
 
+class ProxyDeploymentTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cluster = _cluster("deploy-cluster")
@@ -389,6 +390,7 @@ class ProxyDeploymentTestCase(TestCase):
 # ---------------------------------------------------------------------------
 # Seed migration data integrity
 # ---------------------------------------------------------------------------
+
 
 class SeedMigrationDataTestCase(TestCase):
     """
