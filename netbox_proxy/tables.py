@@ -27,12 +27,17 @@ class ProxyClusterTable(NetBoxTable):
 class ProxyNodeTable(NetBoxTable):
     name = tables.Column(linkify=True)
     cluster = tables.Column(linkify=True)
+    assigned_object = tables.Column(
+        linkify=True,
+        orderable=False,
+        verbose_name="Assigned Object",
+    )
     is_active = columns.BooleanColumn()
 
     class Meta(NetBoxTable.Meta):
         model = ProxyNode
-        fields = ("pk", "id", "cluster", "name", "management_ip", "is_active", "description", "tags", "actions")
-        default_columns = ("cluster", "name", "management_ip", "is_active")
+        fields = ("pk", "id", "cluster", "name", "assigned_object", "management_ip", "is_active", "description", "tags", "actions")
+        default_columns = ("cluster", "name", "assigned_object", "management_ip", "is_active")
 
 
 class ProxyVHostTable(NetBoxTable):
@@ -166,8 +171,10 @@ class ProxyLocationTable(NetBoxTable):
 
 class ProxyDeploymentTable(NetBoxTable):
     cluster = tables.Column(linkify=True)
+    node = tables.Column(linkify=True)
     status = columns.ChoiceFieldColumn()
     initiated_by = tables.Column()
+    rpc_execution = tables.Column(linkify=True, verbose_name="RPC Execution")
 
     class Meta(NetBoxTable.Meta):
         model = ProxyDeployment
@@ -175,12 +182,14 @@ class ProxyDeploymentTable(NetBoxTable):
             "pk",
             "id",
             "cluster",
+            "node",
             "status",
             "initiated_by",
+            "rpc_execution",
             "started_at",
             "completed_at",
             "created",
             "tags",
             "actions",
         )
-        default_columns = ("cluster", "status", "initiated_by", "started_at", "created")
+        default_columns = ("cluster", "node", "status", "initiated_by", "rpc_execution", "started_at", "created")
