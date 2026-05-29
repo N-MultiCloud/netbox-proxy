@@ -135,6 +135,7 @@ netbox_proxy/
   migrations/
     0001_initial.py
     0002_seed_rpc_procedures.py
+    0003_update_nginx_procedure_approvals.py
   tests/
     test_models.py
     test_api.py
